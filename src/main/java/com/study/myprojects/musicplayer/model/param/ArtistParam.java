@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 public class ArtistParam {
 
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "Name is required.")
     private String name;
 
     private LocalDate creationDate;

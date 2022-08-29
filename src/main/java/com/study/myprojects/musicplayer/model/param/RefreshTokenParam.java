@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class RefreshTokenParam {
 
-    @NotBlank(message = "Refresh token is required")
+    @NotBlank(message = "Refresh token is required.")
     private String refreshToken;
 
 }
