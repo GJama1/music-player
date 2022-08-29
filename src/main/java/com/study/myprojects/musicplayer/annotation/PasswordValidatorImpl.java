@@ -25,10 +25,10 @@ public class PasswordValidatorImpl implements ConstraintValidator<Password, Char
 
         String messageTemplate = String.join("/n", messages);
         return throwError(context, messageTemplate);
+
     }
 
     private PasswordValidator validator() {
-
         return new PasswordValidator(Arrays.asList(
                 new LengthRule(8, 100),
                 new CharacterRule(EnglishCharacterData.UpperCase, 1),
@@ -37,7 +37,6 @@ public class PasswordValidatorImpl implements ConstraintValidator<Password, Char
                 new CharacterRule(EnglishCharacterData.Special, 1),
                 new WhitespaceRule()
         ));
-
     }
 
     private boolean throwError(ConstraintValidatorContext context, String message) {
