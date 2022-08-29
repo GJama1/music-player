@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/artists")
+@RequestMapping("/artists")
 @RequiredArgsConstructor
 public class ArtistController {
 
