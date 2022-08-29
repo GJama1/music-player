@@ -1,0 +1,31 @@
+server:
+  port: ${SERVER_PORT:8010}
+spring:
+  application:
+    name: music-player
+  profiles:
+    active: ${PROFILE:giorgi}
+  flyway:
+    baseline-on-migrate: true
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+  datasource:
+    driver-class-name: ${DATABASE_DRIVER:org.postgresql.Driver}
+    url: jdbc:${DATABASE_PROVIDER:postgresql}://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:music_player_db}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
+  jpa:
+    database: ${DATABASE_PROVIDER:postgresql}
+    show-sql: true
+  elasticsearch:
+    username: ${ELASTICSEARCH_USERNAME:elastic}
+    password: ${ELASTICSEARCH_PASSWORD:password}
+    uris:
+      - ${ELASTICSEARCH_HOST:http://localhost}:${ELASTICSEARCH_PORT:9200}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${AUTH_HOST}:${AUTH_PORT}/realms/${AUTH_REALM}/protocol/openid-connect/certs
