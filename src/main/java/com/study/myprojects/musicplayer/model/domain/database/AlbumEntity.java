@@ -25,4 +25,8 @@ public class AlbumEntity extends SuperEntity {
     @Column(name = "image")
     private String image;
 
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    private ArtistEntity artist;
+
 }

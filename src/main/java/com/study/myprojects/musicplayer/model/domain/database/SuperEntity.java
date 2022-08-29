@@ -1,5 +1,6 @@
 package com.study.myprojects.musicplayer.model.domain.database;
 
+import com.study.myprojects.musicplayer.model.enums.Status;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -27,5 +28,8 @@ public class SuperEntity {
     @UpdateTimestamp
     @Column(name = "updated_at")
     protected LocalDateTime updatedAt;
+
+    @Enumerated(EnumType.STRING)
+    protected Status status;
 
 }
