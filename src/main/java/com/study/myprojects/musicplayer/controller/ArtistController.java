@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class ArtistController {
             @RequestParam(required = false, defaultValue = "id") String sort,
             @RequestParam(required = false, defaultValue = "ASC") String direction
     ){
-        return ResponseEntity.ok().body(artistFacade.findAll(page, size, sort, direction));
+        return ResponseEntity.status(HttpStatus.OK).body(artistFacade.findAll(page, size, sort, direction));
     }
 
     @GetMapping("/{id}")
@@ -43,7 +44,7 @@ public class ArtistController {
             security = @SecurityRequirement(name = "bearer-token")
     )
     public ResponseEntity<ArtistDto> findById(@PathVariable("id") Long id){
-        return ResponseEntity.ok().body(artistFacade.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(artistFacade.findById(id));
     }
 
     @PostMapping
@@ -52,7 +53,7 @@ public class ArtistController {
             security = @SecurityRequirement(name = "bearer-token")
     )
     public ResponseEntity<ArtistDto> create(@RequestBody @Valid ArtistParam param, @RequestParam(required = false) MultipartFile image){
-        return ResponseEntity.ok().body(artistFacade.create(param, image));
+        return ResponseEntity.status(HttpStatus.CREATED).body(artistFacade.create(param, image));
     }
 
     @PutMapping("/{id}")
@@ -65,7 +66,7 @@ public class ArtistController {
             @RequestBody ArtistParam param,
             @RequestParam(required = false) MultipartFile image
     ){
-        return ResponseEntity.ok().body(artistFacade.update(id, param, image));
+        return ResponseEntity.status(HttpStatus.OK).body(artistFacade.update(id, param, image));
     }
 
     @DeleteMapping("/{id}")
@@ -75,7 +76,7 @@ public class ArtistController {
     )
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id){
         artistFacade.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
