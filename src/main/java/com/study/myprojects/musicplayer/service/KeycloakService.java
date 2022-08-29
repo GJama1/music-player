@@ -11,11 +11,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +46,18 @@ public class KeycloakService implements AuthService {
     }
 
     @Override
+    public String getSessionId() {
+
+        JwtAuthenticationToken jwt = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        String sessionId = (String) jwt.getTokenAttributes().getOrDefault("session_state", "NOT");
+
+        if (sessionId.equals("NOT"))
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Can't find sessionId in token.");
+        return sessionId;
+
+    }
+
+    @Override
     public AccessTokenResponse refreshToken(RefreshTokenParam refreshTokenParam) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -47,13 +65,13 @@ public class KeycloakService implements AuthService {
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "refresh_token");
-        body.add("client_id", env.getProperty("${AUTH_CLIENT_ID}"));
-        body.add("client_secret", env.getProperty("${AUTH_CLIENT_SECRET}"));
+        body.add("client_id", Objects.requireNonNull(env.getProperty("AUTH_CLIENT_ID")));
+        body.add("client_secret", Objects.requireNonNull(env.getProperty("AUTH_CLIENT_SECRET")));
         body.add("refresh_token", refreshTokenParam.getRefreshToken());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
 
-        return restTemplate.postForObject(env.getProperty("${AUTH_TOKEN_ENDPOINT}"), request, AccessTokenResponse.class);
+        return restTemplate.postForObject(Objects.requireNonNull(env.getProperty("AUTH_TOKEN_ENDPOINT")), request, AccessTokenResponse.class);
     }
 
     @Override

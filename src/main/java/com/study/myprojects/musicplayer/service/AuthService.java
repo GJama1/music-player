@@ -11,6 +11,8 @@ public interface AuthService {
 
     AccessTokenResponse login(LoginParam loginParam);
 
+    String getSessionId();
+
     AccessTokenResponse refreshToken(RefreshTokenParam refreshTokenParam);
 
     void logout(String sessionId);
