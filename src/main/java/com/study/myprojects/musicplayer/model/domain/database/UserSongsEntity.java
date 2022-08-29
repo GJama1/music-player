@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserSongs extends SuperEntity {
+public class UserSongsEntity extends SuperEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -23,8 +23,8 @@ public class UserSongs extends SuperEntity {
     @JoinColumn(name = "song_id")
     private SongEntity song;
 
-    @Column(name = "is_favorite")
+    @Column(name = "is_favorite", nullable = false)
     private Boolean isFavorite;
-    
+
 }
 

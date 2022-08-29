@@ -19,7 +19,7 @@ public class SongEntity extends SuperEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "releaseDate")
+    @Column(name = "release_date")
     private LocalDate releaseDate;
 
     @ManyToOne

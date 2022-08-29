@@ -30,6 +30,7 @@ public class SuperEntity {
     protected LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     protected Status status;
 
 }
