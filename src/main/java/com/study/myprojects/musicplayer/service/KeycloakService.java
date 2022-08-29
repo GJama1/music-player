@@ -76,7 +76,7 @@ public class KeycloakService implements AuthService {
 
     @Override
     public void logout(String sessionId) {
-        keycloakClient.realm(env.getProperty("${AUTH_REALM}")).deleteSession(sessionId);
+        keycloakClient.realm(env.getProperty("AUTH_REALM")).deleteSession(sessionId);
     }
 
 
