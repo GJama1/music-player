@@ -34,4 +34,7 @@ public class SongEntity extends SuperEntity {
     @JoinColumn(name = "genre_id")
     private GenreEntity genre;
 
+    @Column(name = "audio_url")
+    private String audiUrl;
+
 }
