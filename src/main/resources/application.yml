@@ -7,13 +7,14 @@ spring:
     active: ${PROFILE:giorgi}
   flyway:
     baseline-on-migrate: true
+    default-schema: ${DATABASE_SCHEMA:mp_schema}
   data:
     elasticsearch:
       repositories:
         enabled: true
   datasource:
     driver-class-name: ${DATABASE_DRIVER:org.postgresql.Driver}
-    url: jdbc:${DATABASE_PROVIDER:postgresql}://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:music_player_db}
+    url: jdbc:${DATABASE_PROVIDER:postgresql}://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:music_player_db}?currentSchema=${DATABASE_SCHEMA}
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:postgres}
   jpa:
