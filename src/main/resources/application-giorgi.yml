@@ -5,7 +5,7 @@ AUTH_CLIENT_ID: music-player
 AUTH_CLIENT_SECRET: JB1A4KeShvFMTvPN5kUFZh1JAkXRiOTZ
 AUTH_ADMIN_USERNAME: realmadmin
 AUTH_ADMIN_PASSWORD: realmadmin
-AUTH_TOKEN_ENDPOINT: ${AUTH_HOST}:${AUTH_PORT}/auth/realms/${AUTH_REALM}/protocol/openid-connect/token
+AUTH_TOKEN_ENDPOINT: ${AUTH_HOST}:${AUTH_PORT}/realms/${AUTH_REALM}/protocol/openid-connect/token
 
 S3_INTERNAL_HOST: http://localhost
 S3_INTERNAL_PORT: 9000
