@@ -2,8 +2,6 @@ package com.study.myprojects.musicplayer.model.param;
 
 import com.study.myprojects.musicplayer.annotation.Password;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

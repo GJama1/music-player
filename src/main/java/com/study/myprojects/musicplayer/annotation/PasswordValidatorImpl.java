@@ -28,7 +28,7 @@ public class PasswordValidatorImpl implements ConstraintValidator<Password, Char
         }
         List<String> messages = validator.getMessages(result);
 
-        String messageTemplate = String.join("/n", messages);
+        String messageTemplate = String.join("\n", messages);
         return ValidationError.throwError(context, messageTemplate);
 
     }

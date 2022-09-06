@@ -1,6 +1,5 @@
 package com.study.myprojects.musicplayer.annotation;
 
-import org.passay.PasswordValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
