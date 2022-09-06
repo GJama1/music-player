@@ -1,6 +1,5 @@
 package com.study.myprojects.musicplayer.annotation;
 
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;
@@ -10,10 +9,10 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = PasswordValidatorImpl.class)
-public @interface Password {
+@Constraint(validatedBy = EmailValidatorImpl.class)
+public @interface Email {
 
-    String message() default "Invalid password format";
+    String message() default "Invalid email format";
 
     Class<?>[] groups() default {};
 

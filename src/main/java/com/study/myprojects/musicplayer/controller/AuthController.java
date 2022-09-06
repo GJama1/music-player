@@ -4,6 +4,7 @@ import com.study.myprojects.musicplayer.facade.AuthFacade;
 import com.study.myprojects.musicplayer.model.dto.TokenDto;
 import com.study.myprojects.musicplayer.model.param.LoginParam;
 import com.study.myprojects.musicplayer.model.param.RefreshTokenParam;
+import com.study.myprojects.musicplayer.model.param.SignUpParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,12 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<TokenDto> refresh(@RequestBody @Valid RefreshTokenParam param){
         return ResponseEntity.status(HttpStatus.OK).body(authFacade.refresh(param));
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpParam param) {
+        authFacade.signUp(param);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }

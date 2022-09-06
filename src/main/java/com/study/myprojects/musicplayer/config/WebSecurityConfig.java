@@ -27,7 +27,8 @@ public class WebSecurityConfig {
                         "/v2/api-docs/**",
                         "/v3/api-docs/**",
                         "/auth/login",
-                        "/auth/refresh"
+                        "/auth/refresh",
+                        "/auth/signup"
                 ).permitAll()
                 .anyRequest().authenticated()
                 .and()

@@ -10,10 +10,15 @@ import java.util.List;
 public class PasswordValidatorImpl implements ConstraintValidator<Password, CharSequence> {
 
     @Override
+    public void initialize(Password constraintAnnotation) {
+        ConstraintValidator.super.initialize(constraintAnnotation);
+    }
+
+    @Override
     public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
 
         if (value.toString().isBlank()) {
-            return throwError(context, "Password must not be blank.");
+            return ValidationError.throwError(context, "Password must not be blank.");
         }
 
         PasswordValidator validator = validator();
@@ -23,8 +28,8 @@ public class PasswordValidatorImpl implements ConstraintValidator<Password, Char
         }
         List<String> messages = validator.getMessages(result);
 
-        String messageTemplate = String.join("/n", messages);
-        return throwError(context, messageTemplate);
+        String messageTemplate = String.join("\n", messages);
+        return ValidationError.throwError(context, messageTemplate);
 
     }
 
@@ -37,13 +42,6 @@ public class PasswordValidatorImpl implements ConstraintValidator<Password, Char
                 new CharacterRule(EnglishCharacterData.Special, 1),
                 new WhitespaceRule()
         ));
-    }
-
-    private boolean throwError(ConstraintValidatorContext context, String message) {
-        context.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation()
-                .disableDefaultConstraintViolation();
-        return false;
     }
 
 }

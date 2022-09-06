@@ -14,12 +14,15 @@ spring:
         enabled: true
   datasource:
     driver-class-name: ${DATABASE_DRIVER:org.postgresql.Driver}
-    url: jdbc:${DATABASE_PROVIDER:postgresql}://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:music_player_db}?currentSchema=${DATABASE_SCHEMA}
+    url: jdbc:${DATABASE_PROVIDER:postgresql}://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:music_player_db}
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:postgres}
   jpa:
     database: ${DATABASE_PROVIDER:postgresql}
     show-sql: true
+    properties:
+      hibernate:
+        default_schema: ${DATABASE_SCHEMA:mp_schema}
   elasticsearch:
     username: ${ELASTICSEARCH_USERNAME:elastic}
     password: ${ELASTICSEARCH_PASSWORD:password}

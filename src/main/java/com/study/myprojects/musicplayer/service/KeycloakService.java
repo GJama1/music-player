@@ -1,13 +1,16 @@
 package com.study.myprojects.musicplayer.service;
 
+import com.study.myprojects.musicplayer.model.domain.database.UserEntity;
 import com.study.myprojects.musicplayer.model.param.LoginParam;
 import com.study.myprojects.musicplayer.model.param.RefreshTokenParam;
 import lombok.RequiredArgsConstructor;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.AccessTokenResponse;
-import org.springframework.beans.factory.annotation.Value;
+import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,16 +24,31 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.ws.rs.core.Response;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class KeycloakService implements AuthService {
 
     private final Environment env;
     private final RestTemplate restTemplate;
     private final Keycloak keycloakClient;
     private final AuthzClient authzClient;
+
+    private static CredentialRepresentation createPasswordCredentials(CharSequence password) {
+        CredentialRepresentation passwordCredentials = new CredentialRepresentation();
+
+        passwordCredentials.setTemporary(false);
+        passwordCredentials.setType(CredentialRepresentation.PASSWORD);
+        passwordCredentials.setValue(password.toString());
+
+        return passwordCredentials;
+    }
 
     @Override
     public AccessTokenResponse login(LoginParam loginParam) {
@@ -76,9 +94,27 @@ public class KeycloakService implements AuthService {
 
     @Override
     public void logout(String sessionId) {
-        keycloakClient.realm(env.getProperty("AUTH_REALM")).deleteSession(sessionId);
+        keycloakClient.realm(Objects.requireNonNull(env.getProperty("AUTH_REALM"))).deleteSession(sessionId);
     }
 
+    @Override
+    public void createUser(UserEntity user, CharSequence password) {
 
+        UsersResource usersResource = keycloakClient.realm(Objects.requireNonNull(env.getProperty("AUTH_REALM"))).users();
+        UserRepresentation kcUser = new UserRepresentation();
+
+        kcUser.setUsername(user.getUsername());
+        kcUser.setCredentials(Collections.singletonList(createPasswordCredentials(password)));
+        kcUser.setEmail(user.getEmail());
+        kcUser.setAttributes(Map.of("database_id", List.of(user.getId().toString())));
+        kcUser.setEnabled(true);
+
+        Response response = usersResource.create(kcUser);
+        if (!Objects.equals(response.getStatus(), HttpStatus.CREATED.value())) {
+            log.error("Error creating user in Keycloak. Status: {}, reason: {}", response.getStatus(), response.getStatusInfo().getReasonPhrase());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error happened while creating user.");
+        }
+
+    }
 
 }
